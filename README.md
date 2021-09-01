@@ -1,2 +1,2 @@
 * 3097
-[https://lvkhomyakova.github.io/node/3097/index.html](https://lvkhomyakova.github.io/node/3097/index.html)
+[http://178.172.195.18:8180/service3097](http://178.172.195.18:8180/service3097)
