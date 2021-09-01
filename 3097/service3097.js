@@ -4,6 +4,8 @@ const { query, validationResult } = require('express-validator');
 const webServer = express();
 const port = 8180;
 
+webServer.use(express.static(__dirname));
+
 webServer.get('/service3097',
   query('login').notEmpty(),
   query('password').notEmpty().isLength({min: 4}),
