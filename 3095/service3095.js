@@ -8,7 +8,7 @@ const webServer = express();
 
 webServer.use(express.static(__dirname + '/public'));
 
-webServer.get('/', (req, res) => {
+webServer.get('/service3095', (req, res) => {
   res.status(200).send('ok');
 });
 
