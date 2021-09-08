@@ -26,14 +26,17 @@ webServer.get('/variants', (req, res) => {
 
 webServer.get('/vote', (req, res) => {
   const code = 2;
-  updateStat(code);
-  res.send(`
-
-  `);
+  updateStat(code)
+  .then(() => getStat())
+  .then((data) => {
+    res.setHeader("Content-Type", "text/plain");
+    console.log(data);
+    res.send(data);
+  });
 });
 
 webServer.get('/stat', (req, res) => {
-  res.send(getStat())
+  getStat().then((data) => res.send(data.toString()));
 });
 
 webServer.listen(port, () => console.log("web server 3095: running on port " + port));
