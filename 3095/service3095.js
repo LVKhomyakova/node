@@ -1,20 +1,16 @@
 const express = require('express');
 const path = require('path');
 
- const {updateStat, getStat} = require('./utils');
+const {updateStat, getStat} = require('./utils');
+
 
 const port = 8180;
 const webServer = express();
 
-webServer.use(express.static(__dirname + '/public'));
-
-webServer.get('/service3095', (req, res) => {
-  res.status(200).send('ok');
-});
+webServer.use('/service3095', express.static(path.join(__dirname, 'public')));
 
 webServer.get('/variants', (req, res) => {
   res.send(`  
-    <p>Варинаты ответов</p>
     <ul>
       <li>1 - Три дня ничего не ели</li>
       <li>2 - Убивали мамонта</li>
@@ -25,18 +21,11 @@ webServer.get('/variants', (req, res) => {
 });
 
 webServer.get('/vote', (req, res) => {
-  const code = 2;
-  updateStat(code)
-  .then(() => getStat())
-  .then((data) => {
-    res.setHeader("Content-Type", "text/plain");
-    console.log(data);
-    res.send(data);
-  });
+  updateStat(req.query.code).then(() => res.status(200).end())
 });
 
-webServer.get('/stat', (req, res) => {
-  getStat().then((data) => res.send(data.toString()));
+webServer.post('/stat', (req, res) => {
+  getStat().then((data) => res.send(data));
 });
 
 webServer.listen(port, () => console.log("web server 3095: running on port " + port));

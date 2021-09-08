@@ -1,23 +1,22 @@
-const fs = require('fs').promises;
+const fsp = require('fs').promises;
 const path = require('path');
 
 const statFileName = path.join(__dirname, 'stat.txt'); 
 const defaultStat = {1:0, 2:0, 3:0, 4:0};
 
 function updateStat(code) {
-  return fs.readFile(statFileName,  "utf8")
+  return fsp.readFile(statFileName, {encoding: 'utf-8'})
   .then((data) => {
-    console.log(data)
-    const statData = JSON.parse(data.toString() || defaultStat);
-    statData += 1;
+    const statData = JSON.parse(data || JSON.stringify(defaultStat));
+    ++statData[code];
     return statData;
   })
-  .then((statData) => fs.writeFile(statFileName, JSON.stringify(statData)))
+  .then((statData) => fsp.writeFile(statFileName, JSON.stringify(statData)))
   .catch((err) => console.log(err.message));
 }
 
 function getStat() {
-  return fs.readFile(statFileName).then((data) => data.toJSON());
+  return fsp.readFile(statFileName, {encoding: 'utf-8'}).then((data) => data);
 }
 
 module.exports={

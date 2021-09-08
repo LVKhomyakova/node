@@ -1,31 +1,42 @@
-const DATA = {
-  question: 'Что делали древние люди, чтобы вызвать дождь?',
-  answers: [
-    '1 - Три дня ничего не ели', 
-    '2 - Убивали мамонта', 
-    '3 - Танцевали вокруг костра с бубном в руках', 
-    '4 - Ходили с зонтиком и говорили «кажется, дождь начинается…»']
-};
+const API = 'http://178.172.195.18:8180';
 
-function initVariants() {
-  const question = document.createElement('h2');
-  question.textContent = DATA.question;
-  document.body.append(question);  
-
-  // const list = document.createElement('ul');
-
-  // DATA.answers.forEach((item) => {
-  //   const liEl = document.createElement('li');
-  //   liEl.textContent = item;
-  //   list.append(liEl);
-  // });
-
-  // document.body.append(list);  
-
-  document.body.insertAdjacentHTML('beforeend', `
-  <a href="/variants">Варинаты ответов</a>
-  <a href="/vote">Голосовать</a>
-  <a href="/stat">Статистика</a>`);  
+// --------------------- запросы к API -------------------------
+async function getVariants() {
+  const response = await fetch(API + '/variants');
+  if (response.ok)
+    return response.text();
+  else
+    return "Ошибка запроса";
 }
 
-initVariants();
+async function getStat() {
+  const response = await fetch(API + '/stat', {method: 'POST'} );
+  if(response.ok)     
+   return response.text();
+  else
+    return "Ошибка запроса";
+}
+
+async function vote(code) {
+  const response = await fetch(API + `/vote?code=${code}`);
+  if (response.ok)
+    return "ok";
+  else
+    return "Ошибка запроса";
+}
+// --------------------------- *** ------------------------------
+
+async function sendAnswer(code) {
+  const response = await vote(code);
+  if (response === 'ok')
+    document.getElementById('stat').innerHTML = await getStat();
+  else
+    document.getElementById('stat').innerHTML = response;
+}
+
+async function initPage() {
+  document.getElementById('answers').innerHTML = await getVariants();
+  document.getElementById('stat').innerHTML = await getStat();
+}
+
+initPage();
