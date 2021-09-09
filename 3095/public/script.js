@@ -26,17 +26,47 @@ async function vote(code) {
 }
 // --------------------------- *** ------------------------------
 
+function drawStat(statString) {
+  const stat = JSON.parse(statString);
+  const totalCount = stat.reduce((sum, curItem) => sum + curItem, 0);
+  const statInPercent = stat.map((value) => (value / totalCount) * 100);
+
+  const answerWrapper = document.createElement('div');
+  answerWrapper.className = "answers_wrapper";
+
+  statInPercent.forEach((value, index) => {
+    const answer = document.createElement('div');
+    answer.className = 'answer';
+    
+    const label = document.createElement('div');
+    label.textContent = index + 1;
+    
+    const progress = document.createElement('div');
+    progress.className = 'progress';
+    progress.style.width = `${value}%`;
+    
+    answer.append(label);
+    answer.append(progress);
+    answerWrapper.append(answer);
+    console.log(answer)
+  });
+
+  document.getElementById('stat').firstChild?.remove();
+  document.getElementById('stat').append(answerWrapper);
+}
+// --------------------------- *** ------------------------------
+
 async function sendAnswer(code) {
   const response = await vote(code);
   if (response === 'ok')
-    document.getElementById('stat').innerHTML = await getStat();
+    drawStat(await getStat());
   else
     document.getElementById('stat').innerHTML = response;
 }
 
 async function initPage() {
   document.getElementById('answers').innerHTML = await getVariants();
-  document.getElementById('stat').innerHTML = await getStat();
+  drawStat(await getStat());
 }
 
 initPage();
