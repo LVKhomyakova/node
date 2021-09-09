@@ -4,7 +4,7 @@ const API = 'http://178.172.195.18:8180';
 async function getVariants() {
   const response = await fetch(API + '/variants');
   if (response.ok)
-    return response.text();
+    return response.json();
   else
     return "Ошибка запроса";
 }
@@ -12,22 +12,32 @@ async function getVariants() {
 async function getStat() {
   const response = await fetch(API + '/stat', {method: 'POST'} );
   if(response.ok)     
-   return response.text();
+   return response.json();
   else
     return "Ошибка запроса";
 }
 
 async function vote(code) {
-  const response = await fetch(API + `/vote?code=${code}`);
+  const response = await fetch(API + `/vote`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({code})
+  });
   if (response.ok)
     return "ok";
   else
     return "Ошибка запроса";
 }
-// --------------------------- *** ------------------------------
+// --------------------------- RENDER ------------------------------
 
-function drawStat(statString) {
-  const stat = JSON.parse(statString);
+function drawStat(stat) {
+  if (typeof(stat) === 'string') {
+    document.getElementById('stat').innerText = stat;
+    return;
+  }
+
   const totalCount = stat.reduce((sum, curItem) => sum + curItem, 0);
   const statInPercent = stat.map((value) => (value / totalCount) * 100);
 
@@ -48,11 +58,27 @@ function drawStat(statString) {
     answer.append(label);
     answer.append(progress);
     answerWrapper.append(answer);
-    console.log(answer)
   });
 
   document.getElementById('stat').firstChild?.remove();
   document.getElementById('stat').append(answerWrapper);
+}
+
+function drawVariants(data) {
+  if (typeof(data) === 'string') {
+    document.getElementById('variants').innerText = data;
+    return;
+  }
+  
+  const listEl = document.createElement('ul');
+  Object.keys(data).forEach((item, index ) => {
+    const liEl = document.createElement('li');
+    liEl.textContent = `${index + 1} - ${data[item]}`;
+    
+    listEl.append(liEl);
+  })
+
+  document.getElementById('variants').append(listEl);
 }
 // --------------------------- *** ------------------------------
 
@@ -65,7 +91,7 @@ async function sendAnswer(code) {
 }
 
 async function initPage() {
-  document.getElementById('answers').innerHTML = await getVariants();
+  drawVariants(await getVariants());
   drawStat(await getStat());
 }
 

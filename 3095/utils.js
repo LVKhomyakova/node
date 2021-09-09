@@ -1,7 +1,8 @@
 const fsp = require('fs').promises;
 const path = require('path');
 
-const statFileName = path.join(__dirname, 'stat.txt'); 
+const statFileName = path.join(__dirname, 'DB/stat.txt'); 
+const variantsFileName = path.join(__dirname, 'DB/variants.txt'); 
 const defaultStat = [0, 0, 0, 0];
 
 function updateStat(code) {
@@ -19,7 +20,12 @@ function getStat() {
   return fsp.readFile(statFileName, {encoding: 'utf-8'}).then((data) => data);
 }
 
+function getVariants() {
+  return fsp.readFile(variantsFileName, {encoding: 'utf-8'}).then((data) => data);
+}
+
 module.exports={
   updateStat,
-  getStat
+  getStat,
+  getVariants
 };

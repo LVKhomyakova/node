@@ -1,27 +1,21 @@
 const express = require('express');
 const path = require('path');
 
-const {updateStat, getStat} = require('./utils');
+const {updateStat, getStat, getVariants} = require('./utils');
 
 
 const port = 8180;
 const webServer = express();
+webServer.use(express.json());
 
 webServer.use('/service3095', express.static(path.join(__dirname, 'public')));
 
 webServer.get('/variants', (req, res) => {
-  res.send(`  
-    <ul>
-      <li>1 - Три дня ничего не ели</li>
-      <li>2 - Убивали мамонта</li>
-      <li>3 - Танцевали вокруг костра с бубном в руках</li>
-      <li>4 - Ходили с зонтиком и говорили «кажется, дождь начинается…»</li>
-    </ul>
-  `)
+  getVariants().then((data) => res.send(data));
 });
 
-webServer.get('/vote', (req, res) => {
-  updateStat(req.query.code).then(() => res.status(200).end())
+webServer.post('/vote', (req, res) => {
+  updateStat(req.body.code).then(() => res.status(200).end())
 });
 
 webServer.post('/stat', (req, res) => {
