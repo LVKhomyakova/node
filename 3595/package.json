@@ -1,10 +1,10 @@
 {
-  "name": "service3095",
+  "name": "service3595",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon service3095.js",
+    "start": "nodemon service3595.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -1,0 +1,24 @@
+h2 {
+  color: brown;
+}
+
+a {
+  margin-right: 30px;
+}
+
+.answers_wrapper {
+  border: 1px solid #EAEAEA;
+  width: 50%;
+}
+
+.answers_wrapper .answer {
+  background-color: #F5F5F5;
+  display: flex;
+  gap: 10px;
+  margin: 5px;
+}
+
+.answers_wrapper .answer .progress {
+  background-color: chocolate;
+  display: block;
+}
