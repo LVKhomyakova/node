@@ -22,3 +22,7 @@ a {
   background-color: chocolate;
   display: block;
 }
+
+textarea {
+  width: 100%;
+}

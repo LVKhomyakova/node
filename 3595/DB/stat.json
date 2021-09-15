@@ -1,18 +1,18 @@
 [
   {
     "code": "1",
-    "progress": "10"
+    "persent": "10"
   },
   {
     "code": "2",
-    "progress": "30"
+    "persent": "30"
   },
   {
-    "code": "3",
+    "persent": "3",
     "progress": "20"
   },
   {
     "code": "4",
-    "progress": "40"
+    "persent": "40"
   }
 ]

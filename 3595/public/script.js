@@ -16,7 +16,7 @@ async function getVariants() {
 }
 
 async function getStat() {
-  const response = await fetch(API + '/stat', {method: 'POST'} );
+  const response = await fetch(API + '/stat');
   if(response.ok)     
    return response.json();
   else
@@ -38,17 +38,20 @@ async function vote(code) {
 }
 
 async function load(type) {
-  const response = await fetch(API + `/service3595`, {
+  const response = await fetch(API + `/`, {
     headers: {
       'Accept': mimeTypes[type]
     },
   });
-  if (response.ok)
-    return "ok";
+  if(response.ok)     
+   return response.text();
   else
     return "Ошибка запроса";
 }
 // --------------------------- RENDER ------------------------------
+function sowStatFile(response) {
+  document.querySelector('textarea').value = response;
+}
 
 function drawStat(stat) {
   if (typeof(stat) === 'string') {
@@ -100,6 +103,9 @@ function drawVariants(data) {
 }
 
 // --------------------------- *** ------------------------------
+async function loadStatFile(type) {
+  sowStatFile(await load(type));
+}
 
 async function sendAnswer(code) {
   const response = await vote(code);
