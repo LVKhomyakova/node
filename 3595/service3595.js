@@ -8,17 +8,26 @@ webServer.use(express.json());
 
 webServer.use('/service3595', express.static(path.join(__dirname, 'public')));
 
-webServer.use('/service3595', (req, res) => {
-  res.setHeader("Content-Disposition", 'attachment; filename="stat.txt"');
-
-  switch(req.headers.accept) {
-    case 'application/xml': res.setHeader("Content-Type", "application/xml");
-      break;
-    case 'text/html': res.setHeader("Content-Type", "text/html");
-      break;
-    case 'application/json': res.setHeader("Content-Type", "application/json");
-      break;
+webServer.get('/service3595', (req, res) => {
+  let fileType = '';
+  
+  if (req.headers.accept === 'application/xml') {
+    res.setHeader("Content-Type", "application/xml");
+    fileType = 'xml';
+    getStat('xml').then((data) => res.send(data));
   }
+  else if (req.headers.accept === 'text/html') {
+    res.setHeader("Content-Type", "text/html");
+    fileType = 'html';
+    getStat('html').then((data) => res.send(data));
+  }
+  else if (req.headers.accept === 'application/json') {
+    res.setHeader("Content-Type", "application/json");
+    fileType = 'json';
+  }
+
+  res.setHeader(`Content-Disposition", 'attachment; filename="stat.${fileType}"`);
+  getStat(fileType).then((data) => res.send(data));
 });
 
 webServer.get('/variants', (req, res) => {
@@ -30,7 +39,7 @@ webServer.post('/vote', (req, res) => {
 });
 
 webServer.post('/stat', (req, res) => {
-  getStat().then((data) => res.send(data));
+  getStat('txt').then((data) => res.send(data));
 });
 
 webServer.listen(port, () => console.log("web server 3595: running on port " + port));

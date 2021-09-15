@@ -16,8 +16,8 @@ function updateStat(code) {
   .catch((err) => console.log(err.message));
 }
 
-function getStat() {
-  return fsp.readFile(statFileName, {encoding: 'utf-8'}).then((data) => data);
+function getStat(type) {
+  return fsp.readFile(path.join(__dirname, `DB/stat.${type}`), {encoding: 'utf-8'}).then((data) => data);
 }
 
 function getVariants() {
