@@ -1,0 +1,20 @@
+body, p, h5{
+  margin: 0;
+  font-size: 18px;
+}
+
+section{
+  align-items: center;
+  background-color: rgb(214, 214, 214);
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+}
+.key{
+  background-color: white;
+  width: 50%;
+}
+.value{
+ background-color: white;
+  width: 50%;
+}

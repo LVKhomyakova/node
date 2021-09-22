@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="style.css" rel="stylesheet" type="text/css"/>
+  <title>Document</title>
+</head>
+<body>
+  <h2>* KhomPostMan *</h2>
+
+  <label>Метод запроса:</label>
+  <input id="get" type="radio" name="method"><label for="get">GET</label>
+  <input id="post" type="radio" name="method"><label for="post">POST</label>
+  <br>
+  <label>URL запроса:</label>
+  <input type="text">
+  <br>
+
+  <section class="params">    
+    <h5>параметры запроса:</h5>
+    <div class="key">
+      <p contenteditable="true"></p>
+    </div>
+    <div class="value">
+      <p contenteditable="true"></p>
+    </div>
+  </section>
+  <br>
+
+  <section class="headers">    
+    <h5>заголовки запроса:</h5>
+    <div class="key">
+      <p>Content-Type</p>
+    </div>
+    <div class="value">
+      <p contenteditable="true"></p>
+    </div>
+    <div class="key">
+      <p contenteditable="true"></p>
+    </div>
+    <div class="value">
+      <p contenteditable="true"></p>
+    </div>
+  </section>
+  <br>
+
+  <p>тело запроса:</p>
+  <textarea rows="10" type="text"><br>
+</body>
+</html>
+
