@@ -10,44 +10,60 @@
 <body>
   <h2>* KhomPostMan *</h2>
 
-  <label>Метод запроса:</label>
-  <input id="get" type="radio" name="method"><label for="get">GET</label>
-  <input id="post" type="radio" name="method"><label for="post">POST</label>
-  <br>
-  <label>URL запроса:</label>
-  <input type="text">
-  <br>
+  <section class="method">
+    <div>
+      <label>Метод запроса:</label>
+      <input id="get" type="radio" name="method"><label for="get">GET</label>
+      <input id="post" type="radio" name="method"><label for="post">POST</label>
+    </div>
+
+    <div>
+      <label>URL запроса:</label>
+      <input class="url" type="text">
+    </div>
+  </section>
 
   <section class="params">    
-    <h5>параметры запроса:</h5>
-    <div class="key">
-      <p contenteditable="true"></p>
+    <h5>Параметры запроса:</h5>
+    <div>
+      <p>KEY:</p>
+      <p>VALUE:</p>
     </div>
-    <div class="value">
-      <p contenteditable="true"></p>
+
+    <div>
+      <p class="key" contenteditable="true"></p>
+      <p class="value" contenteditable="true"></p>
     </div>
   </section>
-  <br>
 
   <section class="headers">    
-    <h5>заголовки запроса:</h5>
-    <div class="key">
-      <p>Content-Type</p>
+    <h5>Заголовки запроса:</h5>
+    <div>
+      <p>KEY:</p>
+      <p>VALUE:</p>
     </div>
-    <div class="value">
-      <p contenteditable="true"></p>
+
+    <div>
+      <p class="key">Content-Type</p>
+      <p class="value" contenteditable="true"></p>
     </div>
-    <div class="key">
-      <p contenteditable="true"></p>
-    </div>
-    <div class="value">
-      <p contenteditable="true"></p>
+    <div>
+      <p class="key" contenteditable="true"></p>
+      <p class="value" contenteditable="true"></p>
     </div>
   </section>
-  <br>
 
-  <p>тело запроса:</p>
-  <textarea rows="10" type="text"><br>
+  <section>
+    <h5>Тело запроса:</h5>
+
+    <textarea rows="15" width="100%" type="text"></textarea>
+  </section>
+
+  <section>
+    <h5>Ответ:</h5>
+
+    <textarea rows="15" width="100%" type="text" disabled></textarea>
+  </section>
 </body>
 </html>
 
