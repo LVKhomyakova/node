@@ -1,69 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="style.css" rel="stylesheet" type="text/css"/>
-  <title>Document</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>KhomPostMan</title>
 </head>
+
 <body>
   <h2>* KhomPostMan *</h2>
 
-  <section class="method">
-    <div>
-      <label>Метод запроса:</label>
-      <input id="get" type="radio" name="method"><label for="get">GET</label>
-      <input id="post" type="radio" name="method"><label for="post">POST</label>
-    </div>
+  <form #requestForm name="requestForm" onsubmit="return false">
+    <section class="method">
+      <div>
+        <label>Method:</label>
+        <label class="pointer" for="get">
+          <input id="get" type="radio" name="method" value="GET" required>GET
+        </label>
+        <label class="pointer" for="post">
+          <input id="post" type="radio" name="method" value="POST">POST
+        </label>
+        <button class="btn-send pointer" onclick="createRequest(requestForm)">ОТПРАВИТЬ</button>
+      </div>
 
-    <div>
-      <label>URL запроса:</label>
-      <input class="url" type="text">
-    </div>
-  </section>
+      <div>
+        <label>URL:</label>
+        <input class="url" type="text" name="url" required>
+      </div>
+    </section>
 
-  <section class="params">    
-    <h5>Параметры запроса:</h5>
-    <div>
-      <p>KEY:</p>
-      <p>VALUE:</p>
-    </div>
+    <section class="params">
+      <h5>QUERY PARAMS:</h5>
+      <div>
+        <p>Param KEY:</p>
+        <p>Param VALUE:</p>
+      </div>
 
-    <div>
-      <p class="key" contenteditable="true"></p>
-      <p class="value" contenteditable="true"></p>
-    </div>
-  </section>
+      <div>
+        <input class="key" name="pk-1">
+        <input class="value" name="pv-1">
+      </div>
+      <div>
+        <input class="key" name="pk-2">
+        <input class="value" name="pv-2">
+      </div>
+      <div>
+        <input class="key" name="pk-3">
+        <input class="value" name="pv-3">
+      </div>
+    </section>
 
-  <section class="headers">    
-    <h5>Заголовки запроса:</h5>
-    <div>
-      <p>KEY:</p>
-      <p>VALUE:</p>
-    </div>
+    <section class="headers">
+      <h5>HEADERS:</h5>
+      <div>
+        <p>Header KEY:</p>
+        <p>Header Value:</p>
+      </div>
 
-    <div>
-      <p class="key">Content-Type</p>
-      <p class="value" contenteditable="true"></p>
-    </div>
-    <div>
-      <p class="key" contenteditable="true"></p>
-      <p class="value" contenteditable="true"></p>
-    </div>
-  </section>
+      <div>
+        <input class="key" name="hk-1" value="Content-Type" disabled>
+        <input class="value" name="hv-1">
+      </div>
+      <div>
+        <input class="key" name="hk-2">
+        <input class="value" name="hv-2">
+      </div>
+      <div>
+        <input class="key" name="hk-3">
+        <input class="value" name="hv-3">
+      </div>
+    </section>
+
+    <section>
+      <h5>BODY:</h5>
+
+      <textarea rows="15" width="100%" type="text" name="body"></textarea>
+    </section>
+  </form>
 
   <section>
-    <h5>Тело запроса:</h5>
+    <h5>RESPONSE:</h5>
 
-    <textarea rows="15" width="100%" type="text"></textarea>
+    <textarea id="response" rows="15" width="100%" type="text" disabled></textarea>
   </section>
-
-  <section>
-    <h5>Ответ:</h5>
-
-    <textarea rows="15" width="100%" type="text" disabled></textarea>
-  </section>
+  <script src="script.js"></script>
 </body>
-</html>
 
+</html>

@@ -1,6 +1,20 @@
 body, p, h5{
   margin: 0;
   font-size: 18px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.pointer{
+  cursor: pointer;
+}
+.btn-send{
+  background-color: brown;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+.btn-send.green{
+  background-color: green;
 }
 
 section{
