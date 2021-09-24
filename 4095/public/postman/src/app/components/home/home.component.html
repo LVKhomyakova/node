@@ -1,0 +1,86 @@
+<h2>* KhomPostMan *</h2>
+
+<form [formGroup]="requestForm" (ngSubmit)="createRequest()">
+  <section class="method">
+      <h5>Method:</h5>
+      <label class="pointer" for="get">
+        <input id="get" type="radio" formControlName="method" value="GET">GET
+      </label>
+      <label class="pointer" for="post">
+        <input id="post" type="radio" formControlName="method" value="POST">POST
+      </label>
+      <button type="submit" class="btn-send pointer" [class.bg-green]="requestForm.valid">ОТПРАВИТЬ</button>
+      <span *ngIf="requestForm.invalid" class="red">Не все поля заполнены!</span>
+      <div *ngIf="pending" class="loader"><div></div></div>
+  </section>
+
+  <section class="url">
+      <h5>URL:</h5>
+      <input type="text" formControlName="url" required>
+  </section>
+
+  <section class="params">
+    <div>
+      <button class="btn-add pointer green" (click)="addParam()">ADD</button>
+      <h5>QUERY PARAMS:</h5>
+    </div>
+    <div>
+      <p class="small">Param KEY:</p>
+      <p class="small">Param VALUE:</p>
+    </div>
+    
+    <ng-container formArrayName="params">
+      <ng-container *ngFor="let _ of params.controls; let i = index">
+          <div [formGroupName]="i">
+            <input type="text" class="key" formControlName="key" placeholder="enter param key">
+            <input type="text" class="value" formControlName="value" placeholder="enter param value">
+            <span class="pointer red" (click)="deleteParam(i)">X</span>
+          </div>
+      </ng-container>
+    </ng-container>
+  </section>  
+  
+  <section class="headers">
+    <div>
+      <button class="btn-add pointer green" (click)="addHeader()">ADD</button>
+      <h5>HEADERS:</h5>
+    </div>
+    <div>
+      <p class="small">Header KEY:</p>
+      <p class="small">Header VALUE:</p>
+    </div>   
+
+    <div>
+      <input type="text" class="key" value="Content-type" readonly>
+      <select formControlName="contentType">     
+        <option value="application/json">JSON</option>
+        <option value="text/html">HTML</option>
+        <option value="application/xml">XML</option>
+        <option value="text/plain">TEXT</option>
+      </select>
+      <span class="red" [style.visibility]="'hidden'">XXX</span>
+    </div>
+    
+    <ng-container formArrayName="headers">
+      <ng-container *ngFor="let _ of headers.controls; let i = index">
+          <div [formGroupName]="i">
+            <input type="text" class="key" formControlName="key" placeholder="enter header key">
+            <input type="text" class="value" formControlName="value" placeholder="enter header value">
+            <span class="pointer red" (click)="deleteHeader(i)">X</span>
+          </div>
+      </ng-container>
+    </ng-container>
+  </section>   
+
+  <section class="body">
+    <h5>BODY:</h5>
+
+    <textarea rows="15" width="100%" type="text" formControlName="body"></textarea>
+  </section>
+</form>
+
+<section class="response">
+  <h5>RESPONSE:</h5>
+
+  <textarea id="response" rows="15" width="100%" type="text" [formControl]="responseControl"></textarea>
+</section>

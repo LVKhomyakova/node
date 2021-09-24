@@ -1,0 +1,85 @@
+h2{
+  color: whitesmoke;
+  margin: 0;
+  padding: 20px;
+}
+p {
+  &.small {
+    font-size: 10px;
+  }
+}
+
+.btn-send{
+  background-color: brown;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 3px;
+
+  &.bg-green {
+    background-color: green;
+  }
+}
+.btn-add {
+  margin-right: 20px;
+  font-weight: bold;
+  padding: 0 20px;
+}
+
+section{
+  background-color: rgb(214, 214, 214);
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+
+  &.url{
+    input{
+      width: 100%;
+    }
+  }
+
+  &.params, &.headers{
+    flex-direction: column;
+    border-bottom: 1px dashed grey;
+
+    div {
+      display: flex;
+
+      p, input, select{
+        margin: 0 10px;
+        width: 50%;
+      }
+    }
+  }
+  &.body, &.response{
+    flex-direction: column;
+  }
+}
+
+.key, .value {
+  background-color: white;
+  padding: 0 10px;
+}
+
+.red{
+  color: red;
+}
+
+.green{
+  color: green;
+}
+
+.loader{
+  border: 1px solid grey;
+  flex-grow: 1;
+  overflow: hidden;
+  div{
+    height: 100%;
+    background-color: green;
+    animation: width 2s infinite;
+  }
+}
+
+@keyframes width {
+  from{transform: translateX(-100%);}
+  to{transform: translateX(100%);}
+}
