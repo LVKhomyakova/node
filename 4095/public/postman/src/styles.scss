@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "variables";
+@import "helpers";
+html {
+  background-color: #181B1C;
+}
+body, p, h5{
+  font-size: 18px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+}
