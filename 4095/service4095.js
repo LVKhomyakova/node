@@ -20,7 +20,7 @@ webServer.use((req, res, next) => {
   next();
 });
 
-webServer.use('/service4095', express.static(path.resolve(__dirname, 'public/postmanNative')));
+webServer.use('/service4095', express.static(path.join(__dirname, 'public/postman/dist/postman')));
 
 webServer.options('/send', (req, res) => {
   log(LOG_FILE_NAME, 'options request');
