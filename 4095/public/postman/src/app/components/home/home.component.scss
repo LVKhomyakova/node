@@ -3,26 +3,28 @@ h2{
   margin: 0;
   padding: 20px;
 }
-p {
-  &.small {
-    font-size: 10px;
-  }
+.testing{
+  background-color: antiquewhite;
+  padding: 10px;
 }
 
-.btn-send{
-  background-color: brown;
-  color: white;
-  font-weight: bold;
-  letter-spacing: 3px;
+.btn{
+  &-send{
+    background-color: brown;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 3px;
 
-  &.bg-green {
-    background-color: green;
+    &.bg-green {
+      background-color: green;
+    }
   }
-}
-.btn-add {
-  margin-right: 20px;
-  font-weight: bold;
-  padding: 0 20px;
+
+  &-add {
+    margin-right: 20px;
+    font-weight: bold;
+    padding: 0 20px;
+  }
 }
 
 section{
@@ -37,7 +39,7 @@ section{
     }
   }
 
-  &.params, &.headers{
+  &.params, &.headers, &.response{
     flex-direction: column;
     border-bottom: 1px dashed grey;
 
@@ -52,6 +54,28 @@ section{
   }
   &.body, &.response{
     flex-direction: column;
+  }
+  
+  &.response{
+    #status{
+      margin-left: 20px;
+      font-weight: bold;
+      color: green;
+    }
+    .headers{
+      display: flex;
+      flex-direction: column;
+      
+      p{
+        border-bottom: 1px dashed grey;
+        font-size: 14px;
+        white-space: nowrap;
+
+        &:first-child{
+          font-weight: bold;
+        }
+      }
+    }
   }
 }
 

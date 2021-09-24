@@ -1,5 +1,16 @@
 <h2>* KhomPostMan *</h2>
 
+<div class="testing">
+  <p>Запросы для тестирования: </p>
+  <ul>
+    <li><span>method: get, url: http://178.172.195.18:8180/stat</span></li>
+    <li><span>method: post, url: http://178.172.195.18:8180/vote, body: &#123;"code": number&#125; //codes: 1,2,3,4</span></li>
+    <li><span>method: get, url: http://178.172.195.18:8180/message</span></li>
+    <li><span>method: get, url: http://217.21.60.255:5000/192.168.13.118:5000/json/reply/GetAllAgeGroups</span></li>
+  </ul>
+</div>
+
+
 <form [formGroup]="requestForm" (ngSubmit)="createRequest()">
   <section class="method">
       <h5>Method:</h5>
@@ -11,12 +22,13 @@
       </label>
       <button type="submit" class="btn-send pointer" [class.bg-green]="requestForm.valid">ОТПРАВИТЬ</button>
       <span *ngIf="requestForm.invalid" class="red">Не все поля заполнены!</span>
-      <div *ngIf="pending" class="loader"><div></div></div>
+      <div *ngIf="requestForm.valid && pending" class="loader"><div></div></div>
   </section>
 
   <section class="url">
       <h5>URL:</h5>
-      <input type="text" formControlName="url" required>
+      <input type="text" formControlName="url" required placeholder="Enter request url..">
+      <button class="pointer" (click)="clearFrom()">Clear</button>
   </section>
 
   <section class="params">
@@ -80,7 +92,17 @@
 </form>
 
 <section class="response">
-  <h5>RESPONSE:</h5>
+  <div>
+    <h5>RESPONSE:</h5>
+    <span id="status" [class.red]="!responseStatusOk">{{responseStatusCode}}</span>
+  </div>
+  <div class="headers">
+    <span>Response Heders:</span>
+    <div *ngFor="let header of responseHeaders">
+      <p>{{header.key}}:</p>
+      <p>{{header.value}}</p>
+    </div>
+  </div>
 
   <textarea id="response" rows="15" width="100%" type="text" [formControl]="responseControl"></textarea>
 </section>

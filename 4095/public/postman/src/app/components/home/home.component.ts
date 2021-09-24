@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import { Subscription } from "rxjs";
+import { of, Subscription } from "rxjs";
 import { catchError, map } from 'rxjs/operators';
 
 import { HttpService } from 'src/app/http.service';
@@ -16,6 +16,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   responseControl!: FormControl;
   selectedContentType!: string;
   pending: boolean = false;
+  responseStatusOk!: boolean;
+  responseStatusCode: string = '';
+  responseHeaders: any[] = [];
 
   private _subscriptions: Subscription[] = [];
 
@@ -35,7 +38,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       url: [null, Validators.required],
       params: this._fb.array([]),
       headers: this._fb.array([]),
-      contentType: ['text/plain', Validators.required],
+      contentType: ['application/json', Validators.required],
       body: [{value: '', disabled: true}]
     });
 
@@ -49,6 +52,13 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.requestForm.controls.body?.enable();
           this.requestForm.controls.body?.setValidators(Validators.required);
           this.requestForm.controls.body?.updateValueAndValidity();
+
+          this.responseHeaders = [];
+          this.responseStatusCode = '';
+          this.responseControl.reset();
+
+          this.params.clear();
+          this.headers.clear();
         }
       })
     );
@@ -58,33 +68,46 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._subscriptions.forEach((item: Subscription) => item.unsubscribe());
   }
 
+  clearFrom(): void {
+    this.requestForm.reset();
+    this.requestForm.controls.method.setValue('GET');
+    this.requestForm.controls.contentType.setValue('application/json');
+  }
+
   createRequest(): void {
-    this.pending = true;
     if (this.requestForm.invalid) return;
+    this.pending = true;
     const method = this.requestForm.controls.method.value;
     const url = this.requestForm.controls.url.value;
-    const params: any = {};
+    const queryParams: any = {};
     const headers: any = {
       'Content-Type': this.requestForm.controls.contentType.value
     };
 
     this.requestForm.controls.params.value.forEach((paramControl: any) => {
-      params[paramControl.key] = paramControl.value
-      console.log('params', params)
-
+      queryParams[paramControl.key] = paramControl.value
     });
     this.requestForm.controls.headers.value.forEach((paramControl: any) => {
       headers[paramControl.key] = paramControl.value
-      console.log('headers', headers)
-
     });
     const body = this.requestForm.controls.body.value;
 
-    this._httpService.sendRequest(method, url, headers, body)
-      .subscribe((response: any) => {
-        this._showResponse(response);
+    this._subscriptions.push(
+      this._httpService.sendRequest(method, url, queryParams, headers, body).pipe(
+        map((response) => {
+          this.responseHeaders = [];
+          this.responseStatusOk = response.statusOk;
+          this.responseStatusCode = response.statusCode;
+
+          Object.keys(response.headers).forEach(key => this.responseHeaders.push({key, value: response.headers[key]}));
+          return response;
+        }),
+        catchError((err: any) => of({body: err}))
+      ).subscribe((response: any) => {
+        this.responseControl.setValue(response.body);
         this.pending = false;
-      });        
+      })
+    )        
   }
 
   addParam(): void {
@@ -109,9 +132,5 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   deleteHeader(index: number): void { 
     this.headers.removeAt(index);
-  }
-
-  private _showResponse(response: any): void {
-    this.responseControl.setValue(response);
   }
 }

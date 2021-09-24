@@ -10,3 +10,9 @@ body, p, h5{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
 }
+p {
+  &.small {
+    font-size: 10px;
+  }
+}
+
