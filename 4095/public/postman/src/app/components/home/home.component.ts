@@ -2,9 +2,17 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { of, Subscription } from "rxjs";
 import { catchError, map } from 'rxjs/operators';
-
 import { HttpService } from 'src/app/http.service';
 
+export interface RequestData {
+  id: number,
+  name: string,
+  method: string,
+  url: string,
+  params: {key: string, value: string},
+  headers: {key: string, value: string},
+  body: any
+}
 
 @Component({
   selector: 'app-home',
@@ -14,11 +22,16 @@ import { HttpService } from 'src/app/http.service';
 export class HomeComponent implements OnInit, OnDestroy {
   requestForm!: FormGroup;
   responseControl!: FormControl;
+  requestName!: FormControl;
+  selectedRequestId!: FormControl;
+
   selectedContentType!: string;
   pending: boolean = false;
   responseStatusOk!: boolean;
   responseStatusCode: string = '';
   responseHeaders: any[] = [];
+
+  history: RequestData[] = [];
 
   private _subscriptions: Subscription[] = [];
 
@@ -33,6 +46,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.responseControl = new FormControl({value: '', disabled: true});
+    this.requestName = new FormControl('');
+    this.selectedRequestId = new FormControl('');
+
     this.requestForm = this._fb.group({
       method: ['GET', Validators.required],
       url: [null, Validators.required],
@@ -62,6 +78,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       })
     );
+
+    if (!localStorage.getItem('khompostmanHistory'))
+      localStorage.setItem('khompostmanHistory','[{"id":1,"name":"id:1-stat","method":"GET","url":"http://178.172.195.18:8180/stat","params":[],"headers":[],"body":""},{"id":2,"name":"id:2-vote","method":"POST","url":"http://178.172.195.18:8180/vote","params":[],"headers":[],"body":"{\\"code\\": 3}"},{"id":3,"name":"id:3-send and get params","method":"GET","url":"http://178.172.195.18:8180/message","params":[],"headers":[],"body":""},{"id":4,"name":"id:4-может не работать :(","method":"GET","url":"http://217.21.60.255:5000/192.168.13.118:5000/json/reply/GetAllAgeGroups","params":[],"headers":[],"body":""}]');
+    this.history = this.getHistory();
   }
 
   ngOnDestroy(): void {
@@ -132,5 +152,50 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   deleteHeader(index: number): void { 
     this.headers.removeAt(index);
+  }
+
+  changeRequest(): void {    
+    const localStorageHistory = this.getHistory();
+    const selectedRequest = localStorageHistory.find((item) => item.id === Number(this.selectedRequestId.value));
+    if (selectedRequest) {
+      this.clearFrom();
+      this.requestName.setValue(selectedRequest.name.split('-')[1]);
+      this.requestForm.controls.method.setValue(selectedRequest.method),
+      this.requestForm.controls.url.setValue(selectedRequest.url),
+      this.requestForm.controls.params.setValue(selectedRequest.params),
+      this.requestForm.controls.headers.setValue(selectedRequest.headers),
+      this.requestForm.controls.body.setValue(selectedRequest.body);
+    }
+  }
+
+  getHistory(): RequestData[] {
+    console.log(localStorage.getItem('khompostmanHistory'))
+    return JSON.parse(localStorage.getItem('khompostmanHistory') || '[]');
+  }
+
+  saveRequest(): void {
+    if (this.requestName.invalid) return;
+    const localStorageHistory = this.getHistory();
+    const lastId = localStorageHistory[localStorageHistory.length - 1]?.id || 0;
+    localStorageHistory.push({
+      id: lastId + 1,
+      name: `id:${lastId + 1}-${this.requestName.value.trim()}`,
+      method: this.requestForm.controls.method.value,
+      url: this.requestForm.controls.url.value,
+      params: this.requestForm.controls.params.value,
+      headers: this.requestForm.controls.headers.value,
+      body: this.requestForm.controls.body.value
+    });
+    localStorage.setItem('khompostmanHistory', JSON.stringify(localStorageHistory));
+    this.history = this.getHistory();
+  }
+
+  deleteRequest(): void {
+    const localStorageHistory = this.getHistory();
+    const index = localStorageHistory.findIndex((item) => item.id === Number(this.selectedRequestId.value));
+
+    localStorageHistory.splice(index, 1);
+    localStorage.setItem('khompostmanHistory', JSON.stringify(localStorageHistory));
+    this.history = this.getHistory();
   }
 }
