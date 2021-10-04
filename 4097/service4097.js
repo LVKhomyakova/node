@@ -28,9 +28,13 @@ webServer.use((req, res, next) => {
   next();
 });
 webServer.get('/service4097', (req, res) => {
-  res.status(200).send(drawForm(res.app.get('data')?.login, res.app.get('data')?.password));
-  res.app.set('data', '');
+  if (req.app.get('error'))
+    res.status(200).send(drawForm() + req.app.get('error'));
+  else
+    res.status(200).send(drawForm(res.app.get('data')?.login, res.app.get('data')?.password));
 
+  res.app.set('data', '');
+  res.app.set('error', '');
 });
 
 webServer.post('/service4097', 
@@ -39,9 +43,10 @@ body('login').optional().notEmpty(),
 body('password').optional().notEmpty().isLength({min: 4}),
 (req, res) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty())  
-    res.status(400).send(drawForm() + errorMsg);
-  else {
+  if (!errors.isEmpty())  {
+    res.app.set('error', errorMsg);    
+    res.redirect(302, '/service4097');
+  } else {
     res.app.set('data', req.body);    
     res.redirect(302, '/service4097');
   }
