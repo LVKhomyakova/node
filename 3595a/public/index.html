@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=\, initial-scale=1.0">
+  <title>Vote service</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <h2>Что делали древние люди, чтобы вызвать дождь?</h2>
+
+  <button onclick="sendAnswer(1)">1</button>
+  <button onclick="sendAnswer(2)">2</button> 
+  <button onclick="sendAnswer(3)">3</button>
+  <button onclick="sendAnswer(4)">4</button>
+
+  <div id="variants"></div>
+
+  <div id="stat"></div>
+
+  <button onclick="loadStatFile('xml')">Скачать XML</button> 
+  <button onclick="loadStatFile('html')">Скачать HTML</button> 
+  <button onclick="loadStatFile('json')">Скачать JSON</button>
+
+  <br>
+  <textarea disabled rows="25"></textarea>
+
+  <script src="script.js"></script>
+</body>
+</html>

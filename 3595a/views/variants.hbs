@@ -1,0 +1,9 @@
+<ul>
+    {{#if isError}}
+        <li>{{message}}</li>
+    {{else}}
+        {{#each data}}
+            <li>{{code}} - {{answer}}</li>
+        {{/each}}
+    {{/if}}
+</ul>
