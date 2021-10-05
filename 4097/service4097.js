@@ -9,7 +9,7 @@ const port = 8180;
 const errorMsg = '<p for="" style="color:red">Validation error!!</p>';
 
 const drawForm = (login, password) => {
-  return `<form method="POST" action="http://178.172.195.18:8180/service4097"  enctype='multipart/form-data'>
+  return `<form method="POST" action="/service4097"  enctype='multipart/form-data'>
   <label for="">Login</label>
   <input type="text" name="login" value="${login || ''}">  
   <label for="">Password</label>
@@ -43,7 +43,7 @@ body('password').optional().notEmpty().isLength({min: 4}),
     res.status(400).send(drawForm(req.body.login, req.body.password) + errorMsg);
   } else {
     // res.app.set('data', req.body); 
-    const url = new URL('http://178.172.195.18:8180/service4097');
+    const url = new URL('/service4097', req.protocol + '://' + req.headers.host);
     Object.keys(req.body).forEach((key) => url.searchParams.append(key, req.body[key]));
     res.redirect(302, url);
   }
