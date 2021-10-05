@@ -27,14 +27,10 @@ webServer.use((req, res, next) => {
   console.log(`* service4097 called, req.originalUrl=${req.originalUrl}`);
   next();
 });
-webServer.get('/service4097', (req, res) => {
-  if (req.app.get('error'))
-    res.status(200).send(drawForm() + req.app.get('error'));
-  else
-    res.status(200).send(drawForm(res.app.get('data')?.login, res.app.get('data')?.password));
 
-  res.app.set('data', '');
-  res.app.set('error', '');
+webServer.get('/service4097', (req, res) => {
+  // res.status(200).send(drawForm(res.app.get('data')?.login, res.app.get('data')?.password));
+  res.status(200).send(drawForm(req.query?.login, req.query?.password));
 });
 
 webServer.post('/service4097', 
@@ -44,13 +40,13 @@ body('password').optional().notEmpty().isLength({min: 4}),
 (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty())  {
-    res.app.set('error', errorMsg);    
-    res.redirect(302, '/service4097');
+    res.status(400).send(drawForm(req.body.login, req.body.password) + errorMsg);
   } else {
-    res.app.set('data', req.body);    
-    res.redirect(302, '/service4097');
+    // res.app.set('data', req.body); 
+    const url = new URL('http://178.172.195.18:8180/service4097');
+    Object.keys(req.body).forEach((key) => url.searchParams.append(key, req.body[key]));
+    res.redirect(302, url);
   }
-    // res.status(200).send(drawForm(req.body.login, req.body.password));
 });
 
 webServer.listen(port, ()=> console.log("web server running on port " + port));
