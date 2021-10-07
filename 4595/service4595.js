@@ -1,9 +1,11 @@
-const express = require('express');
-const fetch = require("isomorphic-fetch");
-const path = require('path');
-const cors = require('cors');
-const {updateStat, getStat, convertDataTo} = require('../3595/utils');
-const { log } = require('./utils');
+import express from 'express';
+import fetch from "isomorphic-fetch";
+import path from 'path';
+import cors from 'cors';
+
+import { updateStat, getStat, convertDataTo } from '../3595/utils';
+import { log } from './utils';
+import { assertValidate } from './validation';
 
 const webServer = express();
 const PORT = 8180;
@@ -32,9 +34,13 @@ webServer.post('/send', cors(CORS_OPTIONS), async (req, res) => {
   log(LOG_FILE_NAME, 'sending proxy request...');
 
   try{
+    
+    assertValidate(req.body);
+
+
     const reqUrl = new URL(req.body.url);
     Object.keys(req.body.queryParams).forEach(key => reqUrl.searchParams.append(key, req.body.queryParams[key]))
-    
+
     const proxy_response = await fetch(reqUrl, {
       method: req.body.method,
       headers: {
@@ -61,7 +67,7 @@ webServer.post('/send', cors(CORS_OPTIONS), async (req, res) => {
     }));
     log(LOG_FILE_NAME, 'proxy response sended');
   } catch(err) {
-    res.send(err);
+    res.send(JSON.stringify({error: err.message}));
   }
 });
 

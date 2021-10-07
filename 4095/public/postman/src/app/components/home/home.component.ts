@@ -115,16 +115,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._subscriptions.push(
       this._httpService.sendRequest(method, url, queryParams, headers, body).pipe(
         map((response) => {
+          if (response.error) throw response;
           this.responseHeaders = [];
           this.responseStatusOk = response.statusOk;
           this.responseStatusCode = response.statusCode;
-
+          
           Object.keys(response.headers).forEach(key => this.responseHeaders.push({key, value: response.headers[key]}));
           return response;
         }),
-        catchError((err: any) => of({body: err}))
-      ).subscribe((response: any) => {
-        this.responseControl.setValue(response.body);
+        catchError((err: any) => of(err))
+        ).subscribe((response: any) => {
+        this.responseControl.setValue(response.body || response.error);
         this.pending = false;
       })
     )        
@@ -169,7 +170,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getHistory(): RequestData[] {
-    console.log(localStorage.getItem('khompostmanHistory'))
     return JSON.parse(localStorage.getItem('khompostmanHistory') || '[]');
   }
 
