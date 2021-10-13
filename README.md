@@ -4,4 +4,5 @@
 * 4095: упрощённый аналог Postman
 * 4097: доработка «формы с валидацией»
 * 4595: доработка проекта Postman
-* 5693: AutoCompressor . . .
+* 5693: AutoCompressor
+* 5695: FileStorage . . .

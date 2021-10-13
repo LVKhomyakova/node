@@ -1,0 +1,13 @@
+<div class="list">
+    {{#if isError}}
+        <div class="error">{{message}}</div>
+    {{else}}
+        {{#each filesData}}
+            <div class="file">
+                <h4>{{fileName}}</h4>
+                <p>{{comment}}</p>
+                <a href="http://178.172.195.18:8180/download?filename={{fileName}}">СКАЧАТЬ</a> 
+            </div>
+        {{/each}}
+    {{/if}}
+</div>
