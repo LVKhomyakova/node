@@ -10,7 +10,7 @@ h2 {
   color: red;
 }
 
-.list {
+#list {
   box-shadow: rgb(0 0 0 / 20%) 1px 1px 4px;
   background: white;
   border: 1px solid #e4e4ef;
