@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=\, initial-scale=1.0">
+  <title>SQLExplorer</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <h2>SQLExplorer</h2>
+
+  Быстрый запуск:
+  <div class="tests">
+    <button onclick="testSQL('select * from customers')">select</button>
+    <button onclick="testSQL('update customers set customerName=\'Atelier graphique\' where customerNumber=103;')">update</button>
+    <button onclick="testSQL('insert into customers values (103,\'Atelier graphique\',\'Schmitt\',\'Carine\',\'40.32.2555\',\'54, rue Royale\',NULL,\'Nantes\',NULL,\'44000\',\'France\',1370,\'21000.00\');')">insert</button>
+    <button onclick="testSQL('delete from customers where customerNumber=103;')">delete</button>
+  </div>
+
+  <div class="block input">
+    <div class="panel">
+      Введите запрос SQL: 
+      <button onclick="runSQL()">ВЫПОЛНИТЬ</button>
+      <button onclick="clearAll()">Очистить</button>
+    </div>
+    <textarea id="sql" rows="3" class="input"></textarea>
+  </div>
+
+  <div class="block output">
+    <div class="panel">
+      Результат запроса:
+    </div>
+    <table id="results" class="output"></table>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

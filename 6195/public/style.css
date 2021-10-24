@@ -1,0 +1,57 @@
+body {
+  background-color: #f0f5fe;
+}
+
+h2 {
+  color: darkslategray;
+}
+
+button{
+  cursor: pointer;
+}
+
+.panel{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.block {
+  box-shadow: rgb(0 0 0 / 20%) 1px 1px 4px;
+  background: white;
+  border: 1px solid #e4e4ef;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.block.output{
+  overflow: auto;
+  height: 60vh;
+}
+
+table {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  background-color: #f0f5fe93;
+}
+tr{
+  border-top: 1px solid grey;
+}
+tr:first-child{
+  border-top: none;
+}
+th{
+  padding: 4px;
+  border-right: 1px solid grey;
+}
+td{
+  padding: 0 4px;
+  border-right: 1px solid grey;
+}
+th:last-child, td:last-child {
+  border-right: none;
+}
