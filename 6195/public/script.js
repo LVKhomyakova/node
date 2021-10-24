@@ -19,8 +19,14 @@ async function getQueryResults(query) {
 function showResults(data) {
   const tableEl =  document.getElementById('results');
   tableEl.innerHTML = '';
+  let resultArray = [];
+  if (Array.isArray(data.results))
+    resultArray = data.results;
+  else
+    resultArray = [JSON.parse(data.results)];  
+
   // headers
-  const headers = data.fields || ['message'];
+  const headers = Array.isArray(data.results) ? data.fields : Object.keys(JSON.parse(data.results));
   const headersRowEl = document.createElement('tr');
   headers.forEach((header) => {
     const headerCol = document.createElement('th');
@@ -29,49 +35,29 @@ function showResults(data) {
   });
   tableEl.append(headersRowEl);
   //rows
-  if(data.error) {
+  resultArray.forEach((rowData) => {
     const rowEl = document.createElement('tr');
-    const colEl = document.createElement('td');
-    colEl.textContent = data.error;
-    rowEl.append(colEl);
+    Object.keys(rowData).forEach((colData) => {
+      const colEl = document.createElement('td');
+      colEl.textContent = rowData[colData];
+      rowEl.append(colEl);
+    });      
     tableEl.append(rowEl);
-  } else if(Array.isArray(data.results)) {
-    data.results.forEach((rowData) => {
-      const rowEl = document.createElement('tr');
-      Object.keys(rowData).forEach((colData) => {
-        const colEl = document.createElement('td');
-        colEl.textContent = rowData[colData];
-        rowEl.append(colEl);
-      });      
-      tableEl.append(rowEl);
-    });    
-  } else {
-    const rowEl = document.createElement('tr');
-    const colEl = document.createElement('td');
-    colEl.textContent = data.results;
-    rowEl.append(colEl);
-    tableEl.append(rowEl);
-  }
+  });      
 }
 
 // --------------------------- *** ------------------------------
 async function runSQL() {
   const query = document.getElementById('sql').value;
-  // const query = "selec * from customers";
-  // const query = "update * from customers";
-  // const query = "select * from customers";
-
   showResults(await getQueryResults(query));
 }
 
 async function testSQL(query) {
+  clearAll();
   document.getElementById('sql').value = query;
-  showResults(await getQueryResults(query));
 }
 
 function clearAll() {
-  console.log('query')
-
   document.getElementById('sql').value = '';
   document.getElementById('results').innerHTML = '';
 }

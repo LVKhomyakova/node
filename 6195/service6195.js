@@ -44,7 +44,9 @@ webServer.post('/sql', cors(CORS_OPTIONS), (req, res) => {
   const connection = mysql.createConnection(CONNECTION_STRING);  
   connection.connect();
   connection.query(req.body.query, (error, results, fields) => {
-    const responseObj = error ? {error: error?.sqlMessage} : {results: Array.isArray(results) ? results : JSON.stringify(results), fields: fields?.map((item) => item.name)}
+    const responseObj = error 
+    ? {results: JSON.stringify({error: error.sqlMessage})} 
+    : {results: Array.isArray(results) ? results : JSON.stringify(results), fields: fields?.map((item) => item.name)}
     res.status(200).send( JSON.stringify(responseObj));
   });
   connection.end();
